@@ -71,7 +71,7 @@ Try {
 	[string]$appRevision = '01'
 	[string]$appScriptVersion = '3.8.0.0'
 	[string]$appScriptDate = '02/25/2020'
-	[string]$appScriptAuthor = '<author name>'
+	[string]$appScriptAuthor = 'James Hardy'
 	##*===============================================
 	## Variables: Install Titles (Only set here to override defaults set by the toolkit)
 	[string]$installName = ''
@@ -162,7 +162,7 @@ Try {
 		##*===============================================
 		[string]$installPhase = 'Pre-Uninstallation'
 
-		## Show Welcome Message, close Internet Explorer with a 60 second countdown before automatically closing
+		## Show Welcome Message, close PSPP with a 60 second countdown before automatically closing
 		Show-InstallationWelcome -CloseApps 'psppire' -CloseAppsCountdown 60
 
 		## Show Progress Message (with the default message)
