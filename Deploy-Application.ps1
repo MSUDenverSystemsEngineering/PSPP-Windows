@@ -63,10 +63,10 @@ Try {
 	##* VARIABLE DECLARATION
 	##*===============================================
 	## Variables: Application
-	[string]$appVendor = ''
-	[string]$appName = ''
-	[string]$appVersion = ''
-	[string]$appArch = ''
+	[string]$appVendor = 'GNU.org'
+	[string]$appName = 'PSPP'
+	[string]$appVersion = '42.2.3'
+	[string]$appArch = 'x64'
 	[string]$appLang = 'EN'
 	[string]$appRevision = '01'
 	[string]$appScriptVersion = '3.8.0.0'
@@ -119,7 +119,7 @@ Try {
 		[string]$installPhase = 'Pre-Installation'
 
 		## Show Welcome Message, close Internet Explorer if needed, verify there is enough disk space to complete the install, and persist the prompt
-		Show-InstallationWelcome -CloseApps 'iexplore' -CheckDiskSpace -PersistPrompt
+		Show-InstallationWelcome -CloseApps 'firefox,chrome,excel,groove,iexplore,infopath,lync,onedrive,onenote,onenotem,outlook,mspub,powerpnt,winword,winproj,visio' -CheckDiskSpace -PersistPrompt
 
 		## Show Progress Message (with the default message)
 		Show-InstallationProgress
@@ -139,7 +139,9 @@ Try {
 		}
 
 		## <Perform Installation tasks here>
-
+		$exitCode = Execute-Process -Path "$dirFiles\pspp-20181109-daily-64bits-setup.exe" -Parameters '/S' -WindowStyle 'Hidden' -IgnoreExitCodes '1223' -PassThru
+		If ($exitCode.ExitCode -eq "1223") {$exitCode.ExitCode = "0"}
+		If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
 
 		##*===============================================
 		##* POST-INSTALLATION
@@ -161,7 +163,7 @@ Try {
 		[string]$installPhase = 'Pre-Uninstallation'
 
 		## Show Welcome Message, close Internet Explorer with a 60 second countdown before automatically closing
-		Show-InstallationWelcome -CloseApps 'iexplore' -CloseAppsCountdown 60
+		Show-InstallationWelcome -CloseApps 'psppire' -CloseAppsCountdown 60
 
 		## Show Progress Message (with the default message)
 		Show-InstallationProgress
@@ -181,7 +183,8 @@ Try {
 		}
 
 		# <Perform Uninstallation tasks here>
-
+		$exitCode = Execute-Process -Path "$envProgramFiles\PSPP\Uninstall.exe" -Parameters '/S' -WindowStyle 'Hidden'
+		If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
 
 		##*===============================================
 		##* POST-UNINSTALLATION
