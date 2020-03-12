@@ -185,6 +185,7 @@ Try {
 		# <Perform Uninstallation tasks here>
 		$exitCode = Execute-Process -Path "$envProgramFiles\PSPP\Uninstall.exe" -Parameters '/S' -WindowStyle 'Hidden'
 		Wait-Process -name Un_A
+		Start-Sleep -s 10
 		If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
 
 		##*===============================================
