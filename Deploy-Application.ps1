@@ -183,17 +183,9 @@ Try {
 		}
 
 		# <Perform Uninstallation tasks here>
-		Execute-Process -Path "$envProgramFiles\PSPP\Uninstall.exe" -Parameters '/S' -WindowStyle 'Hidden' 
-		Start-Sleep -s 3
-		for ($waitCount = 0; $waitCount -lt 10; $waitCount++) {
-			If (Get-Process -name Un_A) {
-				Write-Log -Message "Uninstall process is running" -Source $deployAppScriptFriendlyName
-				Start-Sleep -s 60
-			}	Else{
-				$waitCount = 10
-				Write-Log -Message "Uninstall Process finished" -Source $deployAppScriptFriendlyName
-			}
-		}
+		$exitCode = Execute-Process -Path "$envProgramFiles\PSPP\Uninstall.exe" -Parameters '/S' -WindowStyle 'Hidden'
+		Wait-Process -name Un_A
+		If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
 
 		##*===============================================
 		##* POST-UNINSTALLATION
